@@ -136,28 +136,18 @@ resource "aws_instance" "ejb-webserver" {
 }
 
 
-#   user_data = <<-EOF  
-#             #!/bin/bash
-#             sudo apt update -y
-#             sudo apt install apache2 -y
-#             sudo systemctl start apache2 
-#             sudo bash -c "echo your very first web server > /var/www/html/index.html"
-#   =EOF
+output "server_private_ip" {
+  value = aws_instance.ejb-webserver.private_ip
+}
 
-#   tags = {
-#     Name = "ejb-web-server"
-#   }
-# }
+output "server_public_ip1" {
+  value = aws_eip.one.public_ip
+}
 
+output "server_public_ip2" {
+  value = aws_instance.ejb-webserver.public_ip
+}
 
-# 7. Network Interface
-# resource "aws_egress_only_internet_gateway" "ipv6_eigw" {
-#   vpc_id = aws_vpc.ejb-prod-vpc.id
-# }
-
-# resource "aws_route" "ipv6_route" {
-#   route_table_id              = aws_route_table.ejb-prod-route-table.id # Replace with your actual route table ID
-#   destination_ipv6_cidr_block = "::/0"
-#   egress_only_gateway_id      = aws_egress_only_internet_gateway.ipv6_eigw.id
-# }
-
+output "server_public_dns" {
+  value = aws_instance.ejb-webserver.public_dns
+}
