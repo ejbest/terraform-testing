@@ -5,6 +5,8 @@
 *.tfstate
 *.tfstate.*
 .DS_Store
+
+.terraform.lock.hcl
 # Crash log files
 crash.log
 crash.*.log
