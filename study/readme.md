@@ -1,11 +1,11 @@
 <h1>Terraform Study Points</h1>
-$${\color{blue}
-1. 	 To specify a specific Terraform workspace named "production" when running commands, you can use the command  }$$
+
+1. To specify a specific Terraform workspace named "production" when running commands, you can use the command  }$$
 <pre>
 terraform workspace select production
 </pre>
 
-2. $${\color{blue} You can use the command __ to reformat your configuration files in the standard canonical style for HCLBlue}$$
+2. You can use the command __ to reformat your configuration files in the standard canonical style for HCLBlue}$$
 <pre>
 terraform apply -auto-approve
 </pre>

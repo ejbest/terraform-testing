@@ -1,7 +1,13 @@
+# “Terraform in 2 Hours”  
+# https://www.youtube.com/watch?v=SLB_c_ayRMo&t=5027s
+# 
+# Good Example for getting Started 
+
 provider "aws" {
   region = "us-east-1"
 
 }
+
 # 1. Create VPC
 resource "aws_vpc" "ejb-prod-vpc" {
   cidr_block = "10.0.0.0/16"
