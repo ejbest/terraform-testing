@@ -1,0 +1,163 @@
+provider "aws" {
+  region = "us-east-1"
+
+}
+# 1. Create VPC
+resource "aws_vpc" "ejb-prod-vpc" {
+  cidr_block = "10.0.0.0/16"
+
+  tags = {
+    Name = "ejb_production_vpc"
+  }
+}
+
+# 2. Create Internet Gateway 
+resource "aws_internet_gateway" "ejb-gw" {
+  vpc_id = aws_vpc.ejb-prod-vpc.id
+}
+
+# 3. Create Route Table
+resource "aws_route_table" "ejb-prod-route-table" {
+  vpc_id = aws_vpc.ejb-prod-vpc.id
+
+  route {
+    # All traffic to the internet gateway
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.ejb-gw.id
+  }
+
+  route {
+    ipv6_cidr_block = "::/0"
+    gateway_id = aws_internet_gateway.ejb-gw.id
+  }
+
+  tags = {
+    Name = "ejb-prod-route-table"
+  }
+}
+
+# 4. Create a subnet-1
+resource "aws_subnet" "ejb-subnet-1" {
+  vpc_id            = aws_vpc.ejb-prod-vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "Prod-subnet-1"
+  }
+}
+
+# 5. Associate subnet with route table 
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.ejb-subnet-1.id
+  route_table_id = aws_route_table.ejb-prod-route-table.id
+}
+
+#6. Create Security group 22, 80, 443
+resource "aws_security_group" "ejb-allow_web" {
+  name        = "allow_web traffic"
+  description = "Allow web inbound traffic and all outbound traffic"
+  vpc_id      = aws_vpc.ejb-prod-vpc.id
+
+  ingress {
+    description = "https traffic"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "http just temporary"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "ssh"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "ejb-allow-tls"
+  }
+}
+
+
+# 7. Create network interface 
+resource "aws_network_interface" "ejb-web-server-nic" {
+  subnet_id   = aws_subnet.ejb-subnet-1.id
+  private_ips = ["10.0.1.50"]
+  security_groups = [aws_security_group.ejb-allow_web.id]
+}
+
+# 8. Assign Public EIP
+resource "aws_eip" "one" {
+  domain                    = "vpc"
+  network_interface         = aws_network_interface.ejb-web-server-nic.id
+  associate_with_private_ip = "10.0.1.50"
+  depends_on                = [aws_internet_gateway.ejb-gw]
+}
+
+
+# 9. Create the WebServer
+resource "aws_instance" "ejb-webserver" {
+  ami               = "ami-0e86e20dae9224db8"
+  instance_type     = "t2.micro" # Corrected instance type
+  availability_zone = "us-east-1a"
+  key_name          = "ej"
+
+  network_interface {
+    device_index         = 0
+    network_interface_id = aws_network_interface.ejb-web-server-nic.id
+  }
+
+  user_data = <<-EOF
+                #!/bin/bash
+                sudo apt update -y
+                sudo apt install apache2 -y
+                sudo systemctl start apache2
+                sudo bash -c 'echo your very first web server > /var/www/html/index.html'
+                EOF
+  tags = {
+    Name = "ejb-web-server"
+  }
+}
+
+
+#   user_data = <<-EOF  
+#             #!/bin/bash
+#             sudo apt update -y
+#             sudo apt install apache2 -y
+#             sudo systemctl start apache2 
+#             sudo bash -c "echo your very first web server > /var/www/html/index.html"
+#   =EOF
+
+#   tags = {
+#     Name = "ejb-web-server"
+#   }
+# }
+
+
+# 7. Network Interface
+# resource "aws_egress_only_internet_gateway" "ipv6_eigw" {
+#   vpc_id = aws_vpc.ejb-prod-vpc.id
+# }
+
+# resource "aws_route" "ipv6_route" {
+#   route_table_id              = aws_route_table.ejb-prod-route-table.id # Replace with your actual route table ID
+#   destination_ipv6_cidr_block = "::/0"
+#   egress_only_gateway_id      = aws_egress_only_internet_gateway.ipv6_eigw.id
+# }
+
