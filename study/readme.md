@@ -1,6 +1,6 @@
 <h1>Terraform Study Points</h1>
 
-1. 	$${\color{blue} To specify a specific Terraform workspace named "production" when running commands, you can use the command}$$
+1. 	$${\color{blue} To specify a specific Terraform workspace }$$ named "production" when running commands, you can use the command
 <pre>
 terraform workspace select production
 </pre>
