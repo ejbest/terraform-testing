@@ -1,14 +1,27 @@
-FYI - just covered “Terraform in 2 Hours”  
+<b4> terraform-testing </b4>
 
+Just a collection of exercieses to share for the Terraform Certification 
 
+See Terraform in 2 Hours <br>
 https://www.youtube.com/watch?v=SLB_c_ayRMo&t=5027s
+<br><br>
+<b5>Personal Feelings </b5>
+- Don't learn AWS without Terraform.
+- Every thing in AWS is a cost and needs to be managed.
+- In the above video; just setting up a simple server, takes 9 configurations in AWS.
+- Each of the 9 configurations; has millions of settings combined.
+- Each configuration in AWS; they have your CREDIT CARD, charges will go nuts.
+<br>
+- There is terms that in AWS/Cloud/DevOps that you will learn 
+- - Source of Truth: a repository like this.
+- - Pipeline: 2 or more scripts that work together and form a target environment 
+- - Ephemeral: temporary and can vanish; a reoccuring thought of efficient managment or watch money disappear.  
+- - Think of this as a journey and we are here on this together.
+<br>
+<br>
 
-this is something I can not recommend enough and the one that “I fail to stress the importance of” when learning AWS - this is great way to learn and break the ice with AWS and “controlling AWS”
+Keep in Touch <br>
 
-Why control AWS; they have your CREDIT CARD and charges will go nuts; don’t believe me, let me know how that works out.
+EJ
 
-What did you change “everything is in the terraform code and was you need to tailor the settings, having the details in the code is mandatory 
-
-Because Terraform dilemmas came up I am doing this and will get back on Kubernetes VERY SOON and I am going for that CKA
-
-If you have not made focus here; please see I am doing this again, trust me on this - how is all otherwise ?
+https://www.linkedin.com/in/ejbest/

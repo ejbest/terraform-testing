@@ -1,14 +1,19 @@
-FYI - just covered “Terraform in 2 Hours”  
-
-
+FYI “Terraform in 2 Hours”  
+<br>
 https://www.youtube.com/watch?v=SLB_c_ayRMo&t=5027s
 
-this is something I can not recommend enough and the one that “I fail to stress the importance of” when learning AWS - this is great way to learn and break the ice with AWS and “controlling AWS”
+- go with this till the end 
+- do this video and you will learn 9 steps of setting up a WebServer
+- after this; you have a template to control your cloud environment 
+<br>
+<br>
 
-Why control AWS; they have your CREDIT CARD and charges will go nuts; don’t believe me, let me know how that works out.
+Enjoy the journey 
 
-What did you change “everything is in the terraform code and was you need to tailor the settings, having the details in the code is mandatory 
+- have patience with the video
+- the person intentionally does things wrong; to help you learn troubleshooting.
+- you will be stopping this video, as there is valuable details here
+- have FUN with this process 
+- this is great stuff 
 
-Because Terraform dilemmas came up I am doing this and will get back on Kubernetes VERY SOON and I am going for that CKA
-
-If you have not made focus here; please see I am doing this again, trust me on this - how is all otherwise ?
+Connect with me; tell me about what you are doing.
