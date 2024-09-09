@@ -17,7 +17,8 @@ There is terms that in AWS/Cloud/DevOps that you will learn. <br>
 - Source of Truth: a repository like this. <br>
 - Pipeline: 2 or more scripts that work together and form a target environment. <br>
 - Ephemeral: temporary and can vanish; a reoccuring thought of efficient managment or watch money disappear. <br>
-- Think of this as a journey and we are here on this together. <br>
+
+Think of this as a journey and we are here on this together. <br>
 <br>
 <br>
 
