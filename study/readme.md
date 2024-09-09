@@ -297,36 +297,162 @@ This code snippet defines a data block for retrieving information about an AWS A
 <pre>
 2
 </pre>
+34. Map Definition Format
+<pre>
+foo = {}
+</pre>
+
+35. A ___________ type allows multiple values of several distinct types to be grouped together as a single value
+<pre>
+structural
+</pre>
+
+36. terraform command to manually mark a resource as no longer tainted
+<pre>
+terraform untaint
+</pre>
+
+37. What is the result of this:
+lookup ({d="1", e="2"}, "f", "3")
+<pre>
+3 
+
+Explanation:
+	•	The lookup function in Terraform is used to retrieve a value from a map.
+	•	It takes three arguments:
+	1.	The map: {d="1", e="2"} – This map contains two key-value pairs: d = "1" and e = "2".
+	2.	The key: "f" – This is the key we’re trying to look up in the map.
+	3.	The default value: "3" – This is the value to return if the key ("f") is not found in the map.
+</pre>
+
+38. Terraform Plugins execute as separate processes:
+<pre>
+True
+</pre>
+
+39. It is secure practice to omit secrets when storing state in the backend. Given that's done, can you directly query Hashicorp Vault for secrets when trying communicate with the backend?
+<pre>
+False 
+</pre>
+
+40. Can you install Terraform on Solaris?
+<pre>
+Yes
+</pre>
+
+41. In Terraform 0.12, you can return the entire module itself from a module.
+<pre>
+Yes
+</pre>
+
+42. Structural types require a ________ as an argument
+<pre>
+schema
+</pre>
+
+43. To persist variable values, you should define them in:
+<pre>
+terraform.tfvars
+</pre>
+
+44. In the following code, does the word myinstances have any significane on AWS?
+
+resource "aws_instance" "myinstances" {
+  count = 3 # it forms three instances type t2
+  ami = "ami-922914f7" # choose the ami that you need
+  instance_type = "t2.micro"
+  
+  tags {
+     Name = "ec2-${count.index}" # name the the instance
+  }
+}
+<pre>
+No, its an arbitrary name in in terraform code
+Name it as you please 
+</pre>
+
+45. Which of the following is NOT a Terraform Enterprise feature?
+<pre>
+Sentinel (is built into Terraform Enterprise)
+</pre>
+
+46. Objects can only have values of same type:
+<pre>
+False 
+</pre>
+
+47. The two kinds of structural type in the Terraform language are: Choose 2
+<pre>
+tuple
+object
+</pre>
+
+48. Adding in explicit provider dependency in provider block is not a good practice.
+<pre>
+False (do not add expicit provider dependency)
+</pre>
+
+49. Question 4
+Incorrect
+In this block what defines to block type?
+
+resource "aws_instance" "foo" {
+ami = "bar"
+   instance_type = "c4.xlarge"
+}
+<pre>
+resource
+</pre>
+
+50. For a parent module to have access to an attribute of resource in the child module, what does the child module has to do?
+<pre>
+explicitly output them
+</pre>
+
+51. Command ____________ looks for all module source lines and retrieves the module codes and errors if can't find them
+<pre>
+terraform get
+</pre>
 
 
 <pre>
-
 </pre>
 
 <pre>
-
 </pre>
 
 <pre>
-
 </pre>
 
 <pre>
-
 </pre>
 
 <pre>
-
 </pre>
 
 <pre>
-
 </pre>
 
 <pre>
-
 </pre>
 
 <pre>
+</pre>
 
+<pre>
+</pre>
+
+<pre>
+</pre>
+
+<pre>
+</pre>
+
+<pre>
+</pre>
+
+<pre>
+</pre>
+
+<pre>
 </pre>
