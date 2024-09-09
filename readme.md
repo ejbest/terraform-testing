@@ -8,8 +8,6 @@ https://www.youtube.com/watch?v=SLB_c_ayRMo&t=5027s
 <b5>Personal Feelings </b5>
 - Don't learn AWS without Terraform.
 - Every thing in AWS is a cost and needs to be managed.
-- In the above video; just setting up a simple server, takes 9 configurations in AWS.
-- Each of the 9 configurations; has millions of settings combined.
 - Each configuration in AWS; they have your CREDIT CARD, charges will go nuts.
 <br>
 
