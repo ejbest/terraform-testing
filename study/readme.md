@@ -502,16 +502,155 @@ FALSE
 The statement "False" is correct because using the latest versions of Terraform, the command `terraform init` can automatically download community providers. This functionality simplifies the process of integrating community providers into Terraform configurations, enhancing the overall user experience.
 </pre>
 
-62. 
-
+62. Which Terraform command will force a resource to be destroyed and recreated even if there are no configuration changes that would require it?
 <pre>
+terraform apply -refresh-only
 </pre>
 
+63. True or False? Workspaces provide similar functionality in the Community and Terraform Cloud versions of Terraform.
 <pre>
+False
+While workspaces in the Community and Terraform Cloud versions of Terraform serve the same purpose of managing multiple environments and configurations, 
+there are differences in how they are implemented and accessed. 
+Terraform Cloud offers additional features and capabilities for managing workspaces, such as remote state management, collaboration tools, 
+and version control integration, which are not available in the Community version.
 </pre>
 
+65. When configuring a remote backend in Terraform, it might be a good idea to purposely omit some of the required arguments to ensure secrets and other relevant data are not inadvertently shared with others. What alternatives are available to provide the remaining values to Terraform to initialize and communicate with the remote backend? (select three)
 <pre>
+interactively on the command line
+use the -backend-config=PATH flag to specify a separate config file
+command-line key/value pairs
 </pre>
 
+66. What are the core Terraform workflow steps to use infrastructure as code?
 <pre>
+1) Write
+2) Plan
+3) Apply
+</pre>
+
+67. True or False? Similar to Terraform Community, you must use the CLI to switch between workspaces when using Terraform Cloud workspaces.
+<pre>
+Correct answer False
+In Terraform Cloud, you can switch between workspaces directly within the Terraform Cloud web interface without the need to use the CLI. Terraform Cloud provides a user-friendly interface that allows users to manage and switch between workspaces efficiently without relying solely on the CLI for workspace management.
+</pre>
+
+68. In regards to Terraform state file, select all the statements below which are correct: (select four)
+<pre>
+storing state remotely can provide better security
+the Terraform state can contain sensitive data, therefore the state file should be protected from unauthorized access
+Terraform Cloud always encrypts state at rest
+when using local state, the state file is stored in plain-text
+https://developer.hashicorp.com/terraform/language/state/sensitive-data
+</pre>
+
+
+69. In the terraform block, which configuration would be used to identify the specific version of a provider required?
+<pre>
+required_providers
+The correct configuration to identify the specific version of a provider required is the "required_providers" block in the terraform configuration. This block allows you to specify the provider name and version constraints, ensuring that the correct version of the provider is used for the Terraform configuration.
+</pre>
+
+70. Frank has a file named main.tf which is shown below. Which of the following statements are true about this code? (select two)
+module "servers" {
+  source = "./modules/app-cluster"
+ 
+  servers = 5
+}
+<pre>
+app-cluster is the child module
+main.tf is the calling module
+</pre>
+
+71. Which of the following describes the process of leveraging a local value within a Terraform module and exporting it for use by another module?
+<pre>
+Exporting the local value as an output from the first module, then importing it into the second module's configuration.
+</pre>
+
+72. Kristen is using modules to provision an Azure environment for a new application. She is using the following code to specify the version of her virtual machine module. Which of the following Terraform features supports the versioning of a module? (select two)
+module "compute" {
+  source  = "azure/compute/azurerm"
+  version = "5.1.0"
+ 
+  resource_group_name = "production_web"
+  vnet_subnet_id      = azurerm_subnet.aks-default.id 
+}
+<pre>
+private registry
+terraform registry
+Version constraints are supported only for modules installed from a module registry, such as the public Terraform Registry https://registry.terraform.io/ 
+or Terraform Cloud's private registry. https://developer.hashicorp.com/terraform/cloud-docs/registry
+Other module sources can provide their own versioning mechanisms within the source string itself, or might not support versions at all. 
+In particular, modules sourced from local file paths do not support version; since they're loaded from the same source repository, 
+they always share the same version as their caller.
+https://developer.hashicorp.com/terraform/language/modules/syntax#version
+</pre>
+
+73. Which Terraform command will force a resource to be destroyed and recreated even if there are no configuration changes that would require it?
+<pre>
+Correct answer: terraform apply -replace=<address>
+Explanation
+The `terraform apply -replace=` command is used to force a resource to be destroyed and recreated, even if there are no configuration changes that would require it. This is achieved by specifying the resource address that needs to be replaced, ensuring that the resource is recreated with the latest configuration.
+</pre>
+
+74. What are some problems with how infrastructure was traditionally managed before Infrastructure as Code? (select three)
+<pre>
+Traditional deployment methods are not able to meet the demands of the modern business where resources tend to live days to weeks, rather than months to years
+Traditionally managed infrastructure can't keep up with cyclic or elastic applications
+Requests for infrastructure or hardware often required a ticket, increasing the time required to deploy applications
+</pre>
+
+75. You have been given requirements to create a security group for a new application. Since your organization standardizes on Terraform, you want to add this new security group with the fewest number of lines of code. What feature could you use to iterate over a list of required tcp ports to add to the new security group?
+<pre>
+dynamic block
+Using a dynamic block in Terraform allows you to iterate over a list of items, such as a list of required tcp ports, and dynamically create resources based on those items. This feature helps reduce the amount of code needed to define multiple similar resources, making it the ideal choice for adding multiple tcp ports to the new security group with minimal lines of code.
+</pre>
+
+76. Why is it a good idea to declare the required version of a provider in a Terraform configuration file?
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "3.57.0"
+    }
+  }
+}
+<pre>
+providers are released on a separate schedule from Terraform itself; therefore, a newer version could introduce breaking changes
+
+Declaring the required version of a provider in a Terraform configuration file is important because providers are released independently from Terraform. This means that a newer version of a provider could potentially introduce breaking changes that are not compatible with the current configuration. Specifying the version ensures that the configuration works as expected with the specific provider version.
+</pre>
+
+77. Using multi-cloud and provider-agnostic tools provides which of the following benefits? (select two)
+<pre>
+operations teams only need to learn and manage a single tool to manage infrastructure, regardless of where the infrastructure is deployed
+can be used across major cloud providers and VM hypervisors
+
+Using multi-cloud and provider-agnostic tools allows for the flexibility to deploy infrastructure across different major cloud providers and virtual machine hypervisors. This means that the same tool can be used to manage resources in AWS, Azure, Google Cloud, and other platforms, reducing the need to learn and manage multiple tools for each provider.
+</pre>
+
+78. Terry is using a module to deploy some EC2 instances on AWS for a new project. He is viewing the code that is calling the module for deployment, which is shown below. Where is the value of the security group originating?
+module "ec2_instances" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "4.3.0"
+ 
+  name           = "my-ec2-cluster"
+  instance_count = 2
+ 
+  ami                    = "ami-0c5204531f799e0c6"
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [module.vpc.default_security_group_id]
+  subnet_id              = module.vpc.public_subnets[0]
+ 
+  tag = {
+    Terraform   = "true"
+    Environment = "dev"
+  } 
+
+
+<pre>
+the output of another module
+
+Using multi-cloud and provider-agnostic tools allows for the flexibility to deploy infrastructure across different major cloud providers and virtual machine hypervisors. This means that the same tool can be used to manage resources in AWS, Azure, Google Cloud, and other platforms, reducing the need to learn and manage multiple tools for each provider.
 </pre>
