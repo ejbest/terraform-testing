@@ -28,7 +28,7 @@ resource "aws_route_table" "ejb-prod-route-table" {
 
   route {
     # All traffic to the internet gateway
-    cidr_block = var.ejb_cidr_block
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.ejb-gw.id
   }
 
