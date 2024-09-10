@@ -414,36 +414,95 @@ explicitly output them
 terraform get
 </pre>
 
-
+52. What Terraform command can be used to manually unlock the state for the defined configuration?
 <pre>
+terraform force-unlock
+Usage: terraform force-unlock [options] LOCK_ID 
+FYI - I had to do this after I hit ctrl-c on a repo that I should not have touched 
 </pre>
 
+53. A user has created three workspaces using the command line - prod, dev, and test. The user wants to create a fourth workspace named stage.
+Which command will the user execute to accomplish this task?
 <pre>
+terraform workspace new stage
 </pre>
 
+54. What feature of Terraform Cloud allows you to publish and maintain a set of custom modules that can only be used within your organization?
 <pre>
+private registry 
 </pre>
 
+55. Why might a user opt to include the following snippet in their configuration file?
+terraform {
+  required_version = ">= 1.9.2"
+}
 <pre>
+Correct answer
+The user wants to specify the minimum version of Terraform that is required to run the configuration
 </pre>
 
+56. Emma is a Terraform expert, and she has automated all the things with Terraform. A virtual machine was provisioned during a recent deployment, but a local script did not work correctly. As a result, the virtual machine needs to be destroyed and recreated.
+How can Emma quickly have Terraform recreate the one resource without having to destroy everything that was created?
 <pre>
+Correct answer
+use terraform apply -replace=aws_instance.web to mark the virtual machine for replacement
 </pre>
 
+57. True or False? Rather than use a state file, Terraform can inspect cloud resources on every run to validate that the real-world resources match the desired state.
 <pre>
+False
+Terraform requires a state file to store information about the current state of infrastructure resources. By inspecting this state file, Terraform can determine the necessary changes to bring the real-world resources in line with the desired state specified in the configuration files. Without a state file, Terraform would not be able to perform this validation. 
 </pre>
 
+58. What do the declarations, such as name, cidr, and azs, in the following Terraform code represent and what purpose do they serve?
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.7.0"
+ 
+  name = var.vpc_name
+  cidr = var.vpc_cidr
+ 
+  azs             = var.vpc_azs
+  private_subnets = var.vpc_private_subnets
+  public_subnets  = var.vpc_public_subnets
+ 
+  enable_nat_gateway = var.vpc_enable_nat_gateway
+ 
+  tags = var.vpc_tags
+}
 <pre>
+Correct answer
+these are variables that are passed into the child module likely used for resource creation
 </pre>
 
+59. Which of the following variable declarations is going to result in an error?
 <pre>
+Correct answer
+variable "example" { 
+  description = "This is a variable description" 
+  type        = list(string) 
+  default     = {}
+}
+The variable declaration is going to result in an error 
+because the default value is assigned as an empty map {}. 
+The type specified for the variable is list(string), 
+so assigning an empty map as the default value is not valid and will cause an error.
 </pre>
 
+60. You are adding a new variable to your configuration. Which of the following is NOT a valid variable type in Terraform?
 <pre>
+Correct answer
+float 
+float is not a variable in terraform  
 </pre>
 
+61. True or False? Using the latest versions of Terraform, terraform init cannot automatically download community providers.
 <pre>
+FALSE 
+The statement "False" is correct because using the latest versions of Terraform, the command `terraform init` can automatically download community providers. This functionality simplifies the process of integrating community providers into Terraform configurations, enhancing the overall user experience.
 </pre>
+
+62. 
 
 <pre>
 </pre>
