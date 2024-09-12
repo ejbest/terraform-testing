@@ -1,5 +1,168 @@
 ### Test Practice 4 ###
 
+#### these are the questions that were missed ####
+#### these are all good details to ensure you know ####
+
+19. Which of the following is the best description of a dynamic block?
+- produces nested configuration blocks instead of a complex typed valu
+A dynamic block acts much like a for expression, but produces nested blocks instead of a complex typed value. It iterates over a given complex value and generates a nested block for each element of that complex value. You can dynamically construct repeatable nested blocks like setting using a special dynamic block type, which is supported inside resource, data, provider, and provisioner blocks.
+
+
+WRONG ANSWERS:
+
+* declares a resource of a given type with a given local name = this is the definition of a resource block
+
+* requests that Terraform read from a given data source and export the result under the given local name = this is a data block
+
+* exports a value exported by a module or configuration = this is an output block
+
+https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks
+
+20. You need to use multiple resources from different providers in Terraform to accomplish a task. Which of the following can be used to configure the settings for each of the providers?
+
+<pre>
+    provider "consul" {
+      address = "https://consul.krausen.com:8500"  
+      namespace = "developer"
+      token = "45a3bd52-07c7-47a4-52fd-0745e0cfe967"
+    }
+     
+    provider "vault" {
+      address = "https://vault.krausen.com:8200"
+      namespace = "developer"
+    }
+</pre>
+
+- To configure each provider, you need to define a provider block and provide the configuration within that block. You would need to do this for each provider that you need to configure. For example, if you needed to customize the aws, gcp, and vault provider, you'd need to create three separate provider blocks, one for each provider.
+
+- Additional Clarity: While you can configure parameters inside a provider block, the provider block is not needed to use Terraform successfully. The most common configurations within a provider block are credentials to access the platform, which should be placed in environment variables rather than inside a provider block. In my examples above, I am providing custom configurations for my needs. But, if I were using the defaults, I wouldn't need to add a provider block for my project to be successfully deployed.
+
+- Don't forget that configurations for a provider go inside of a provider block, but any provider constraints go inside of the terraform --> required_providers block.
+
+https://developer.hashicorp.com/terraform/language/providers
+https://developer.hashicorp.com/terraform/language/providers/configuration#provider-configuration-1
+
+24. After using Terraform locally to deploy cloud resources, you have decided to move your state file to an Amazon S3 remote backend. You configure Terraform with the proper configuration as shown below. What command should be run in order to complete the state migration while copying the existing state to the new backend?
+
+<pre>
+    terraform {
+      backend "s3" {
+        bucket = "tf-bucket"
+        key = "terraform/krausen/"
+        region = "us-east-1"
+      }
+    }
+</pre>
+- terraform init -migrate-state
+- Whenever a configuration's backend changes, you must run terraform init again to validate and configure the backend before you can perform any plans, applies, or state operations. Re-running init with an already-initialized backend will update the working directory to use the new backend settings. Either -reconfigure or -migrate-state must be supplied to update the backend configuration.
+- When changing backends, Terraform will give you the option to migrate your state to the new backend. This lets you adopt backends without losing any existing state.
+
+https://developer.hashicorp.com/terraform/language/settings/backends/configuration
+https://developer.hashicorp.com/terraform/cli/commands/init#backend-initialization
+
+26. Which of the following is not true about the terraform.tfstate file used by Terraform?
+- it always matches the infrastructure deployed with Terraform
+- The one thing that cannot be guaranteed is that the terraform.tfstate file ALWAYS matches the deployed infrastructure since changes can easily be made outside of Terraform. - For example, if you deploy a bunch of resources in GCP and nobody makes any changes, then yes, the terraform.tfstate file does match the current state of those resources. However, if an engineer makes a change in the GCP console or CLI, then the terraform.tfstate would NOT match the infrastructure deployed until you ran a terraform apply -refresh-only command.
+- This is why the only false statement in this question is: it always matches the infrastructure deployed with Terraform.
+
+- Terraform uses the terraform.tfstate file to store everything it needs to manage the resources it is managing. This includes a ton of information about each resource it provisions and manages. Because of this, HashiCorp recommends that you DO NOT modify the file directly outside of using the Terraform workflow (terraform init, plan, apply, destroy) and terraform state CLI commands.
+
+- Many times, you'll need to provide sensitive values to deploy and manage resources, or Terraform may retrieve sensitive values at your request (like data blocks). In that case, these values may get saved to the state file, therefore you should limit who can access the state file to protect this sensitive data.
+
+https://developer.hashicorp.com/terraform/language/state
+
+https://developer.hashicorp.com/terraform/language/state/sensitive-data
+
+https://developer.hashicorp.com/terraform/language/state/purpose
+
+31. You are using Terraform OSS and need to spin up a copy of your GCP environment in a second region to test some new features. You create a new workspace. Which of the following is true about this new workspace? (select four)
+
+    1. it uses the same Terraform code in the current directory
+    2. changes to this workspace won't impact other workspaces
+    3. it has its own state file
+    4. you can use a different variables file for this workspace if needed
+
+- Terraform workspaces (OSS) allow you to create a new workspace to execute the same Terraform but with a different state file. This feature will enable you to run the same Terraform with different configurations without modifying Terraform code or impacting any existing workspaces.  Terraform states out with the default workspace, and that's the workspace you are using unless you create and switch to a new workspace.
+
+- Remember that Terraform Cloud and Enterprise also have Workspaces, but they behave slightly differently. In Cloud and Ent, each workspace is still isolated from others, meaning it has its own state. Still, often these workspaces point to different code repositories and use completely different Terraform configuration files.
+
+
+To create a new workspace, you'd run:
+
+    $ terraform workspace new btk
+     
+    Created and switched to workspace "btk"! 
+     
+    You're now on a new, empty workspace. Workspaces isolate their state, so if you run "terraform plan" Terraform will not see any existing state for this configuration.
+
+
+To list all of the existing workspaces, you can run (note the * indicates the workspace you are using):
+
+    $ terraform workspace list 
+     
+    default*
+    btk
+    bryan-dev
+    temp-workspace
+
+When using workspaces, you're essentially using the same Terraform configuration files. Therefore the backend will remain the same for all of your workspaces. That makes this answer incorrect.
+
+https://developer.hashicorp.com/terraform/language/state/workspaces
+
+https://developer.hashicorp.com/terraform/cli/commands/workspace/list
+
+https://developer.hashicorp.com/terraform/cli/commands/workspace/new
+
+
+32. You have a module named prod_subnet that outputs the subnet_id of the subnet created by the module. How would you reference the subnet ID when using it for an input of another module?
+- subnet = module.prod_subnet.subnet_id 
+
+- Using interpolation, you can reference the output of an exported value by using the following syntax: module.<module name>.<output name>
+
+- Don't forget that before you can reference data/values from a module, the module has to have an output declared that references the desired value(s).
+
+- No answers are valid interpolation syntax to reference an output that originates from a module.
+
+https://developer.hashicorp.com/terraform/language/modules/syntax#accessing-module-output-values
+
+https://learn.hashicorp.com/collections/terraform/modules
+
+34. Which common action does not cause Terraform to refresh its state?
+- terraform state list
+- Running a terraform state list does not cause Terraform to refresh its state. This command simply reads the state file but it will not modify it.
+- When running a plan, apply, or destroy, Terraform needs to refresh state to ensure that it has the latest information about the managed resources so it understands what changes should be made when applying the desired state configuration.
+
+https://developer.hashicorp.com/terraform/cli/commands/init
+
+35. You are using Terraform Cloud to manage a new data analytics environment for your organization. You have decided to use Sentinel to enforce standardization and security controls. At what step are the Sentinel policies enforced during a run?
+
+- after the plan, run tasks, cost estimation phases but before the apply phase
+Sentinel policy evaluations occur after Terraform completes the plan and after both run tasks and cost estimation. This order lets you write Sentinel policies to restrict costs based on the data in the cost estimates.
+
+- OPA policy evaluations are slightly different and occur after Terraform completes the plan and after any run tasks. Unlike Sentinel policies, Terraform Cloud evaluates OPA policies immediately before cost estimation.
+
+https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/policy-results
+
+36. Which of the following tasks does terraform init perform? (select three)
+    1. prepares the working directory for use with Terraform
+    2. caches the source code locally for referenced modules
+    3. downloads required providers used in your configuration file
+
+- The terraform init command performs several different initialization steps in order to prepare the current working directory for use with Terraform. Some of these steps include downloading any referenced providers (like AWS, Azure, GCP, etc.), caching the source code for modules in the local directory so they can be used, and other steps to prepare the working directory to be used with Terraform.
+
+- Note that there are quite a few options that you can use with terraform init to perform operations that you might need when using Terraform. These operations might include state migrations or upgrading providers.
+- The terraform init does NOT create a sample Terraform configuration file. Actually, I don't know if there are any native Terraform commands that will create a .tf file for you.
+
+- You can run terraform init over and over again and it will not change/modify your state file.
+
+https://developer.hashicorp.com/terraform/cli/commands/init
+
+https://learn.hashicorp.com/collections/terraform/aws-get-started
+
+37. You want to use a Terraform provisioner to execute a script on the remote machine. What block type would use to declare the provisioner?
+<pre>
+resource block
+</pre>
 
 
 38. True or False? Official Terraform providers and modules are owned and maintained by HashiCorp.
