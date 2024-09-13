@@ -1,14 +1,14 @@
 <h1>Terraform Study Points</h1>
 
 1. To specify a specific Terraform workspace named "production" when running commands, you can use the command  }$$
-<pre>
-terraform workspace select production
-</pre>
+
+- terraform workspace select production
+
 
 2. You can use the command __ to reformat your configuration files in the standard canonical style for HCLBlue}$$
-<pre>
-terraform apply -auto-approve
-</pre>
+
+- terraform apply -auto-approve
+
 
 3. How can you reference all of the subnets created by this resource block?
 <pre>
@@ -24,10 +24,10 @@ resource "aws_subnet" "private_subnets" {
     Terraform = "true"
   }
 }
-
-Your answer is incorrect
-aws_subnet.private_subnet.id
 </pre>
+
+Answer is incorrect
+- aws_subnet.private_subnet.id
 
 4. To list all resources in the current state, you can use the command __
 <pre>
@@ -77,13 +77,13 @@ terraform login
     Name = "demo_igw"
   }
 }
+</pre>
 
 Correct answer
-terraform state show aws_internet_gateway.demo
+- terraform state show aws_internet_gateway.demo
 
 Explanation
-terraform state show ADDRESS will show the attributes of a single resource, therefore the answer is aws_internet_gateway.demo
-</pre>
+- terraform state show ADDRESS will show the attributes of a single resource, therefore the answer is aws_internet_gateway.demo
 
 13. By default, Terraform stores its state in a file named __
 <pre>
@@ -107,20 +107,17 @@ data "aws_ami" "ubuntu" {
  
   owners = ["099720109477"] 
 }
-
-Correct answer
-data.aws_ami.ubuntu.id
 </pre>
+Correct answer
+- data.aws_ami.ubuntu.id
 
 16. You want Terraform to redeploy a specific resource that it is managing. Type the command you should use to mark the resource for replacement. __
 <pre>
-terraform apply -replace
-
-Explanation
-You would mark the resource for replacement using terraform apply -replace.
-
-NOTE: This used to be terraform taint and has been replaced with terraform apply -replace
+- terraform apply -replace
 </pre>
+Explanation
+- You would mark the resource for replacement using terraform apply -replace.
+NOTE: This used to be terraform taint and has been replaced with terraform apply -replace
 
 17. The command __ is used to extract the output variables defined in the Terraform configuration.
 <pre>
@@ -155,10 +152,10 @@ run a terraform state rm command to remove the Cloud SQL instance from Terraform
 22. What environment variable can be set to enable detailed logging for Terraform?
 <pre>
 TF_DEBUG
+</pre>
 
 Explanation
-The environment variable `TF_DEBUG` is not used to enable detailed logging for Terraform. It is typically used for debugging purposes and not for detailed logging.
-</pre>
+- The environment variable `TF_DEBUG` is not used to enable detailed logging for Terraform. It is typically used for debugging purposes and not for detailed logging.
 
 23. From the code below, identify the implicit dependency:
 <pre>
@@ -172,9 +169,9 @@ resource "aws_instance" "web_server" {
   instance_type = "t2.micro"
   depends_on    = [aws_s3_bucket.company_data]
 }
-ANSWER 
-The EC2 instance labeled web_server
 </pre>
+ANSWER 
+- The EC2 instance labeled web_server
 
 24. You are developing a new Terraform module to demonstrate features of the most popular HashiCorp products. You need to spin up an AWS instance for each tool, so you create the resource block as shown below using the for_each meta-argument. -------- After the deployment, you view the state using the terraform state list command. What resource address would be displayed for the instance related to vault?
 <pre>
@@ -187,17 +184,17 @@ resource "aws_instance" "bryan-demo" {
     "nomad":     "scheduler",
   }
 }
-ANSWER 
-aws_instance.bryan-demo["vault"]
 </pre>
+ANSWER 
+- aws_instance.bryan-demo["vault"]
 
 25. After many years of using Terraform Community (Free), you decide to migrate to Terraform Cloud. After the initial configuration, you create a workspace and migrate your existing state and configuration. What Terraform version would the new workspace be configured to use after the migration?
 <pre>
 the same Terraform version that was used to perform the migration
-
-Explanation
-The new workspace in Terraform Cloud will be configured to use the same Terraform version that was used to perform the migration. This ensures compatibility and consistency with the existing state and configuration.
 </pre>
+Explanation
+- The new workspace in Terraform Cloud will be configured to use the same Terraform version that was used to perform the migration. This ensures compatibility and consistency with the existing state and configuration.
+
 
 26. Which of the following is a valid variable name in Terraform?
 <pre>
@@ -205,26 +202,24 @@ version
 lifecycle
 count
 invalid (INCORRECT)
-This is a valid variable name in Terraform as it follows the naming conventions for variables, which allow alphanumeric characters and underscores, and must start with a letter or underscore.
-
 </pre>
+The word "invalid" is a valid variable name in Terraform as it follows the naming conventions for variables, which allow alphanumeric characters and underscores, and must start with a letter or underscore.
 
-27. Where does Terraform Community (Free) store the local state for workspaces?
+27. Where does Teraform Community (Free) store the local state for workspaces?
 <pre>
 directory called terraform.tfstate.d/<workspace name>
-
-Explanation
-Terraform Community (Free) stores the local state for workspaces in a directory called `terraform.tfstate.d/`. This directory structure allows for separate state files for each workspace, making it easier to manage and maintain the state data.
-workspaces workspaces workspaces workspaces workspaces workspaces 
 </pre>
 
+Explanation
+- Terraform Community (Free) stores the local state for workspaces in a directory called `terraform.tfstate.d/`. This directory structure allows for separate state files for each workspace, making it easier to manage and maintain the state data.
+workspaces workspaces workspaces workspaces workspaces workspaces 
+
 28. Which are some of the benefits of using Infrastructure as Code in an organization? (select three)
-<pre>
-OK IaC code can be used to manage infrastructure on multiple cloud platforms
-OK IaC allows you to commit your configurations to version control to safely collaborate on infrastructure
-OK IaC uses a human-readable configuration language to help you write infrastructure code quickly
-XXXXX IaC is written as an imperative approach, where specific commands need to be executed in the correct order XXXXXX
- </pre>
+- OK IaC code can be used to manage infrastructure on multiple cloud platforms
+- OK IaC allows you to commit your configurations to version control to safely collaborate on infrastructure
+- OK IaC uses a human-readable configuration language to help you write infrastructure code quickly
+- XXXXX IaC is written as an imperative approach, where specific commands need to be executed in the correct order XXXXXX
+
 
 29. You are performing a code review of a colleague's Terraform code and see the following code. Where is this module stored?
 <pre>

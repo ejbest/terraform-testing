@@ -75,12 +75,12 @@ https://developer.hashicorp.com/terraform/language/settings/backends/configurati
 
 https://developer.hashicorp.com/terraform/cli/commands/destroy
 
-19. DYNAMIC BLOCK 
-- produces nested configuration blocks instead of a complex typed value
-- A dynamic block acts much like a for expression, but produces nested blocks instead of a complex typed value. It iterates over a given complex value and generates a nested block for each element of that complex value. 
+19. DYNAMIC BLOCK produces nested configuration blocks instead of a complex typed value
+- A dynamic block acts much like a for expression, but produces nested blocks instead of a complex typed value. 
+- It iterates over a given complex value and generates a nested block for each element of that complex value. 
 - You can dynamically construct repeatable nested blocks like setting using a special dynamic block type, which is supported inside resource, data, provider, and provisioner blocks.<br><br>
-OTHER BLOCKS:
 
+OTHER BLOCKS:
 - RESOURCE BLOCK declares a resource of a given type with a given local name 
 - DATA BLOCK requests that Terraform read from a given data source and export the result under the given local name 
 - OUTPUT BLOCK exports a value exported by a module or configuration 
@@ -109,6 +109,7 @@ https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks
 - Don't forget that configurations for a provider go inside of a provider block, but any provider constraints go inside of the terraform --> required_providers block.
 
 https://developer.hashicorp.com/terraform/language/providers
+
 https://developer.hashicorp.com/terraform/language/providers/configuration#provider-configuration-1
 
 24. After using Terraform locally to deploy cloud resources, you have decided to move your state file to an Amazon S3 remote backend. You configure Terraform with the proper configuration as shown below. What command should be run in order to complete the state migration while copying the existing state to the new backend?
@@ -127,15 +128,14 @@ https://developer.hashicorp.com/terraform/language/providers/configuration#provi
 - When changing backends, Terraform will give you the option to migrate your state to the new backend. This lets you adopt backends without losing any existing state.
 
 https://developer.hashicorp.com/terraform/language/settings/backends/configuration
+
 https://developer.hashicorp.com/terraform/cli/commands/init#backend-initialization
 
 26. Which of the following is not true about the terraform.tfstate file used by Terraform?
 - it always matches the infrastructure deployed with Terraform
 - The one thing that cannot be guaranteed is that the terraform.tfstate file ALWAYS matches the deployed infrastructure since changes can easily be made outside of Terraform. - For example, if you deploy a bunch of resources in GCP and nobody makes any changes, then yes, the terraform.tfstate file does match the current state of those resources. However, if an engineer makes a change in the GCP console or CLI, then the terraform.tfstate would NOT match the infrastructure deployed until you ran a terraform apply -refresh-only command.
 - This is why the only false statement in this question is: it always matches the infrastructure deployed with Terraform.
-
 - Terraform uses the terraform.tfstate file to store everything it needs to manage the resources it is managing. This includes a ton of information about each resource it provisions and manages. Because of this, HashiCorp recommends that you DO NOT modify the file directly outside of using the Terraform workflow (terraform init, plan, apply, destroy) and terraform state CLI commands.
-
 - Many times, you'll need to provide sensitive values to deploy and manage resources, or Terraform may retrieve sensitive values at your request (like data blocks). In that case, these values may get saved to the state file, therefore you should limit who can access the state file to protect this sensitive data.
 
 https://developer.hashicorp.com/terraform/language/state
@@ -346,17 +346,6 @@ Terraform plugin cache
 terraform console 
 </pre>
 
-
-55. When developing Terraform code, you must include a provider block for each unique provider so Terraform knows which ones you want to download and use.
-
-
-- Unlike many other objects in the Terraform language, a provider block may be omitted if its contents would otherwise be empty. Terraform assumes an empty default configuration for any provider that is not explicitly configured. In other words, if you don't have any specific configurations for your provider, you may indeed leave it out of your configuration.
-
-- To prove this out, I created a .tf file that includes a resource from the RANDOM provider as well as the AWS provider and omitted any provider blocks in my configuration. After running a terraform init, you can clearly see that Terraform understands what providers the resources are from and downloads the correct provider plugins. Thus proving that you do NOT need a Provider block to use Terraform.
-![example](./practice4question53.png)
-
-https://developer.hashicorp.com/terraform/language/providers/configuration
-
 55. True points the terraform.tfstate file used by Terraform?
 <pre>
 - does not always match the infrastructure deployed with Terraform
@@ -385,8 +374,19 @@ on main.tf line 35:
 4: db_path = var.db_connection_string
 </pre>    
 - An input variable with the name "db_connection_string" has not been declared. This variable can be declared with a variable "db_connection_string" {} block.
-Why would you receive such an error?
-
-- since the variable was declared within the module, it cannot be referenced outside of the module
-
+- Why would you receive such an error? since the variable was declared within the module, it cannot be referenced outside of the module
 - Variables declared within a module are scoped to that module and cannot be directly referenced outside of it. In this case, the variable "db_connection_string" was declared inside the "app" module, so it cannot be accessed outside of the module without proper scoping or passing it as an output.
+
+55. When developing Terraform code, you must include a provider block for each unique provider so Terraform knows which ones you want to download and use.
+
+- Unlike many other objects in the Terraform language, a provider block may be omitted if its contents would otherwise be empty. Terraform assumes an empty default configuration for any provider that is not explicitly configured. In other words, if you don't have any specific configurations for your provider, you may indeed leave it out of your configuration.
+
+- To prove this out, I created a .tf file that includes a resource from the RANDOM provider as well as the AWS provider and omitted any provider blocks in my configuration. After running a terraform init, you can clearly see that Terraform understands what providers the resources are from and downloads the correct provider plugins. Thus proving that you do NOT need a Provider block to use Terraform.
+![example](./practice4question53.png)
+
+https://developer.hashicorp.com/terraform/language/providers/configuration
+
+###### BONUS ###### <br>
+00. How can you easily view the terraform state without catting or logging to pull down the remote 
+- terraform state pull
+
