@@ -1,20 +1,89 @@
 ### Test Practice 4 ###
 
-#### these are the questions that were missed ####
+This is from Test 4 of the Udemy Course 
+###### Earn your HashiCorp Certified: Terraform Associate 003 with over *300* unique Terraform Associate questions ######
+
 #### these are all good details to ensure you know ####
+#### the question is there verbatim ####
+#### notes below each questions are facts and should be checked ####
+#### only question missed are showing below ####
 
-19. Which of the following is the best description of a dynamic block?
-- produces nested configuration blocks instead of a complex typed valu
-A dynamic block acts much like a for expression, but produces nested blocks instead of a complex typed value. It iterates over a given complex value and generates a nested block for each element of that complex value. You can dynamically construct repeatable nested blocks like setting using a special dynamic block type, which is supported inside resource, data, provider, and provisioner blocks.
+Review; make a branch and recommend any fixes (this should be perfect facts)
+
+1. You need Terraform to destroy and recreate a single database server that was deployed with a bunch of other resources. You don't want to modify the Terraform code. What command can be used to accomplish this task?
+
+terraform apply -replace="aws_instance.database"
+
+- When working with resources, there may be times where a particular resource didn't deploy correctly, although Terraform thinks it did. An example of this might be a script that runs on a virtual machine in the background. The virtual came up fine, so Terraform believes it was successful, but the script didn't perform the tasks you needed it to, so you need Terraform to destroy and recreate the one resource. In this case, you can use terraform apply -replace="<resource_id>"  to have Terraform replace this one resource on the next terraform apply. 
+
+- This command was formally terraform taint, and you may or may not see terraform taint still on the exam. The taint command was deprecated in Terraform 0.15.2 and replaced with the terraform apply -replace command. Note that the resource is NOT immediately replaced when you run a terraform taint. It will only happen on the next terraform plan/apply. While HashiCorp does a great job updating their exams, sometimes commands can be a little slow to be removed or replaced from the test questions.
+
+https://developer.hashicorp.com/terraform/cli/commands/taint
 
 
-WRONG ANSWERS:
+5. You are working on updating your infrastructure managed by Terraform. Before lunch, you update your configuration file and run a terraform plan to validate the changes. While you are away, a colleague manually updates a tag on a managed resource directly in the console (UI).   What will happen when you run a terraform apply?
 
-* declares a resource of a given type with a given local name = this is the definition of a resource block
+- Before applying the new configuration, Terraform will refresh the state and recognize the manual change. It will update the resource based on the desired state as configured in the Terraform configuration. The manual change will no longer exist.
 
-* requests that Terraform read from a given data source and export the result under the given local name = this is a data block
+- There's a lot to this question, but the reasoning is pretty basic. Since a resource was manually changed, it means that Terraform state is no longer accurate. However, before a terraform plan or terraform apply is executed, Terraform refreshes its state to ensure it knows the status of all its managed resources. During this process, Terraform would recognize the change, update state, and compare that to the new configuration file. Assuming the change defined in the configuration is identical to the manual change, Terraform would simply apply any changes (if any), update the state file, and complete the terraform apply.
 
-* exports a value exported by a module or configuration = this is an output block
+8. Your co-worker has decided to migrate Terraform state to a remote backend. They configure Terraform with the backend configuration, including the type, location, and credentials. However, you want to secure this configuration better. Rather than storing them in plaintext, where should you store the credentials for the remote backend? 
+
+    1. credentials file
+    2. environment variables 
+
+- Some backends allow providing access credentials directly as part of the configuration for use in unusual situations, for pragmatic reasons. 
+- In normal use, HashiCorp does not recommend including access credentials as part of the backend configuration. 
+- Instead, leave those arguments completely unset and provide credentials via the credentials files or environment variables that are conventional for the target system, as described in the documentation for each backend.
+
+https://developer.hashicorp.com/terraform/language/settings/backends/configuration
+
+13. You have an existing resource in your public cloud that was deployed manually, but you want the ability to reference different attributes of that resource throughout your configuration without hardcoding any values. How can you accomplish this?
+
+- Add a data block to your configuration to query the existing resource. Use the available exported attributes of that resource type as needed throughout your configuration to get the values you need.
+
+- Anytime you need to reference a resource that is NOT part of your Terraform configuration, you need to query that resource using a data block - assuming a data source is available for that resource_type. Once you add the data block to your configuration, you will be able to export attributes from that data block using interpolation like any other resource in Terraform. For example, if you had an AWS S3 bucket, you could get information using a data block that looked like this:
+
+<pre>
+    data "aws_s3_bucket" "data_bucket" {
+      bucket = "my-data-lookup-bucket-btk"
+    }
+</pre>
+
+- Once you add the data block, you can refer to exported attributes like this: data.aws_s3_bucket.data_bucket.arn 
+
+14. Your organization uses IaC to provision and manage resources in a public cloud platform. A new employee has developed changes to existing code and wants to push it into production.   What best practice should the new employee follow to submit the new code?
+
+- Correct Answer: Submit a merge/pull request of the proposed changes. Have a team member validate the changes and approve the request.
+- Have to watch for trick questions or just questions about "best practices" 
+- Following best practices for code, the new changes should be submitted as a pull/merge request in the existing code repository. A teammate, or the security team, should validate the changes and approve the request, ultimately merging the new changes into the existing codebase
+
+17. What CLI commands will completely tear down and delete all resources that Terraform is currently managing?
+
+     1- terraform destroy <br>
+     2- terraform apply -destroy 
+
+- The terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration.
+
+- While you will typically not want to destroy long-lived objects in a production environment, Terraform is sometimes used to manage ephemeral infrastructure for development purposes, in which case you can use terraform destroy to conveniently clean up all of those temporary objects once you are finished with your work.
+
+- This command is just a convenience alias for the following command:
+<pre>
+- terraform apply -destroy</pre>
+
+- For that reason, this command accepts most of the options that terraform apply accepts, although it does not accept a plan file argument and forces the selection of the "destroy" planning mode.
+
+https://developer.hashicorp.com/terraform/cli/commands/destroy
+
+19. DYNAMIC BLOCK 
+- produces nested configuration blocks instead of a complex typed value
+- A dynamic block acts much like a for expression, but produces nested blocks instead of a complex typed value. It iterates over a given complex value and generates a nested block for each element of that complex value. 
+- You can dynamically construct repeatable nested blocks like setting using a special dynamic block type, which is supported inside resource, data, provider, and provisioner blocks.<br><br>
+OTHER BLOCKS:
+
+- RESOURCE BLOCK declares a resource of a given type with a given local name 
+- DATA BLOCK requests that Terraform read from a given data source and export the result under the given local name 
+- OUTPUT BLOCK exports a value exported by a module or configuration 
 
 https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks
 
