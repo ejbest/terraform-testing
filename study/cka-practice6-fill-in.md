@@ -4,11 +4,9 @@
 
 - terraform workspace select production
 
-
 2. You can use the command __ to reformat your configuration files in the standard canonical style for HCLBlue}$$
 
-- terraform apply -auto-approve
-
+- terraform fmt
 
 3. How can you reference all of the subnets created by this resource block?
 <pre>
