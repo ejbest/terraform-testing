@@ -1,14 +1,143 @@
 <h1>Terraform Study Points</h1>
 
-1. To specify a specific Terraform workspace named "production" when running commands, you can use the command  }$$
+1. In order to check the current version of Terraform you have installed, you can use the command __
 
-- terraform workspace select production
+- terraform version 
 
-2. You can use the command __ to reformat your configuration files in the standard canonical style for HCLBlue}$$
+2. The command __ can be used to ensure your code is syntactically valid and internally consistent.
+
+- terraform validate
+
+3. To skip the refresh step during a terraform apply, you can use the command __
+
+- terraform apply -refresh=false
+
+4. By default, Terraform stores its state in a file named __
+
+- terraform .tfstate
+
+5. You can use the command __ to reformat your configuration files in the standard canonical style for HCL.
 
 - terraform fmt
 
-3. How can you reference all of the subnets created by this resource block?
+6. To automatically apply changes without interactive confirmation, you can use the command __
+
+terraform apply -auto-approve
+
+7. What command can be used to perform a dry-run of your changes and save the proposed changes to a file named bryan for future use? __
+
+terraform plan -out=bryan
+
+8. You need to access the attributes of a data source in your Terraform configuration for the following code. How should you reference the ID of the returned data? __ 
+<pre>
+data "aws_ami" "ubuntu" {
+  most_recent = true
+ 
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+ 
+  owners = ["099720109477"] 
+}</pre>
+
+- data.aws_ami.ubuntu.id
+
+- The expression data.aws_ami.ubuntu.id is used in Terraform to refer to the ID of an Amazon Machine Image (AMI) for Ubuntu retrieved from the AWS data source named aws_ami. In this example, aws_ami is a data source provided by the AWS provider for Terraform, which allows you to fetch information about AMIs available in your AWS account.
+
+- This specific expression assumes that you have defined a data source block named aws_ami in your Terraform configuration and configured it to retrieve information about Ubuntu AMIs. The .id part of the expression accesses the ID attribute of the AMI object retrieved by the data source. This ID can then be used elsewhere in your Terraform configuration, such as in resource definitions, to reference the specific AMI you want to use for provisioning instances.
+
+9. The command __ is used to extract the output variables defined in the Terraform configuration.
+
+- terraform output
+
+10. You have recently added new resource blocks from a different provider to your configuration. Type in the command you need to run before you can run a terraform plan/apply? __ 
+
+- terraform init
+
+11. You have the following code snippet as part of your Terraform configuration. How would you reference the id of the s3_bucket?
+<pre>
+data "aws_s3_bucket" "data_bucket" {
+  bucket = "my-data-lookup-bucket-bk"
+}
+</pre>
+- data.aws_s3_bucket.data_bucket.id
+
+12. How can you reference all of the subnets created by this resource block?
+<pre>
+#Deploy the private subnets
+resource "aws_subnet" "private_subnets" {
+  for_each          = var.private_subnets
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.value)
+  availability_zone = tolist(data.aws_availability_zones.available.names)[each.value]
+ 
+  tags = {
+    Name      = each.key
+    Terraform = "true"
+  }
+}
+</pre>
+- aws_subnet.private_subnets[*]
+
+13. You want Terraform to redeploy a specific resource that it is managing. Type the command you should use to mark the resource for replacement. __
+
+- terraform apply -replace
+
+14. To force the destruction of resources without being prompted for confirmation, you can use the command __
+
+- terraform destroy -auto-approve
+
+15. To specify a specific Terraform workspace named "production" when running commands, you can use the command __
+
+- terraform workspace select production
+
+16. To list all resources in the current state, you can use the command __
+
+- terraform state list
+
+- The terraform state list command is used in Terraform, an infrastructure as code tool, to list all the resources currently being managed by Terraform within a particular state file. This command provides a quick overview of the resources that Terraform is aware of and managing. It's particularly useful for understanding what infrastructure resources have been provisioned and are being tracked by Terraform for any given project or environment.
+
+
+17. The __ or the __ commands are available to delete all of your managed infrastructure.
+
+    1. terraform destroy 
+    2. terraform apply -destroy
+
+18. You are using Terraform Cloud to store your state file. Before you can use Terraform Cloud, you should run the command __ to obtain and save credentials for the remote backend.
+
+- terraform login
+
+19. The __ command can be used to get an interactive console to evaluate expressions in your Terraform code.
+
+- terraform console
+
+20. What command can you use to display details about the resource as shown below?
+<pre>
+resource "aws_internet_gateway" "demo" {
+  vpc_id = aws_vpc.vpc.id
+  tags = {
+    Name = "demo_igw"
+  }
+}
+</pre>
+- terraform state show aws_internet_gateway.demo
+
+- terraform state show ADDRESS will show the attributes of a single resource, therefore the answer is aws_internet_gateway.demo
+
+
+
+
+
+
+
+
+
+
+
+
+
+00. How can you reference all of the subnets created by this resource block?
 <pre>
 #Deploy the private subnets
 resource "aws_subnet" "private_subnets" {
@@ -27,47 +156,7 @@ resource "aws_subnet" "private_subnets" {
 Answer is incorrect
 - aws_subnet.private_subnet.id
 
-4. To list all resources in the current state, you can use the command __
-<pre>
-terraform state list
-</pre>
-
-5. The __ or the __ commands are available to delete all of your managed infrastructure.
-<pre>
-terraform destroy, terraform apply -destroy
-</pre>
-
-6. To skip the refresh step during a terraform apply, you can use the command __
-<pre>
-terraform apply -refresh=false
-</pre>
-
-7. The command __ can be used to ensure your code is syntactically valid and internally consistent.
-<pre>
-terraform validate
-</pre>
-
-8. In order to check the current version of Terraform you have installed, you can use the command __
-<pre>
-terraform version
-</pre>
-
-9. To force the destruction of resources without being prompted for confirmation, you can use the command __
-<pre>
-terraform destroy -auto-approve
-</pre>
-
-10. The __ command can be used to get an interactive console to evaluate expressions in your Terraform code.
-<pre>
-terraform console
-</pre>
-
-11. You are using Terraform Cloud to store your state file. Before you can use Terraform Cloud, you should run the command __ to obtain and save credentials for the remote backend.
-<pre>
-terraform login
-</pre>
-
-12. What command can you use to display details about the resource as shown below?
+00. What command can you use to display details about the resource as shown below?
 <pre>
  resource "aws_internet_gateway" "demo" {
   vpc_id = aws_vpc.vpc.id
@@ -83,17 +172,7 @@ Correct answer
 Explanation
 - terraform state show ADDRESS will show the attributes of a single resource, therefore the answer is aws_internet_gateway.demo
 
-13. By default, Terraform stores its state in a file named __
-<pre>
-terraform.tfstate
-</pre>
-
-14. To automatically apply changes without interactive confirmation, you can use the command __
-<pre>
-terraform apply -auto-approve
-</pre>
-
-15. You need to access the attributes of a data source in your Terraform configuration for the following code. How should you reference the ID of the returned data? __ 
+00. You need to access the attributes of a data source in your Terraform configuration for the following code. How should you reference the ID of the returned data? __ 
 <pre>
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -109,20 +188,20 @@ data "aws_ami" "ubuntu" {
 Correct answer
 - data.aws_ami.ubuntu.id
 
-16. You want Terraform to redeploy a specific resource that it is managing. Type the command you should use to mark the resource for replacement. __
+00. You want Terraform to redeploy a specific resource that it is managing. Type the command you should use to mark the resource for replacement. __
 <pre>
 - terraform apply -replace
 </pre>
-Explanation
-- You would mark the resource for replacement using terraform apply -replace.
-NOTE: This used to be terraform taint and has been replaced with terraform apply -replace
 
-17. The command __ is used to extract the output variables defined in the Terraform configuration.
+- You would mark the resource for replacement using terraform apply -replace.
+- NOTE: This used to be terraform taint and has been replaced with terraform apply -replace
+
+00. The command __ is used to extract the output variables defined in the Terraform configuration.
 <pre>
 terraform output
 </pre>
 
-18. What command can be used to perform a dry-run of your changes and save the proposed changes to a file named bryan for future use? __
+00. What command can be used to perform a dry-run of your changes and save the proposed changes to a file named bryan for future use? __
 <pre>
 terraform plan -out=bryan
 </pre>
@@ -290,36 +369,6 @@ This code snippet defines a data block for retrieving information about an AWS A
 <pre>
 2
 </pre>
+- 2 - spaces
 
 
-<pre>
-
-</pre>
-
-<pre>
-
-</pre>
-
-<pre>
-
-</pre>
-
-<pre>
-
-</pre>
-
-<pre>
-
-</pre>
-
-<pre>
-
-</pre>
-
-<pre>
-
-</pre>
-
-<pre>
-
-</pre>
