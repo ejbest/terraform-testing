@@ -12,7 +12,7 @@ Review; make a branch and recommend any fixes (this should be perfect facts)
 
 1. You need Terraform to destroy and recreate a single database server that was deployed with a bunch of other resources. You don't want to modify the Terraform code. What command can be used to accomplish this task?
 
-terraform apply -replace="aws_instance.database"
+- terraform apply -replace="aws_instance.database"
 
 - When working with resources, there may be times where a particular resource didn't deploy correctly, although Terraform thinks it did. An example of this might be a script that runs on a virtual machine in the background. The virtual came up fine, so Terraform believes it was successful, but the script didn't perform the tasks you needed it to, so you need Terraform to destroy and recreate the one resource. In this case, you can use terraform apply -replace="<resource_id>"  to have Terraform replace this one resource on the next terraform apply. 
 

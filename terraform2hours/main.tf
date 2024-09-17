@@ -4,8 +4,8 @@
 # Good Example for getting Started 
 
 provider "aws" {
-  region = "us-east-1"
-
+  region = var.ejb_region
+  #region = "us-east-1"
 }
 
 # 1. Create VPC
@@ -120,7 +120,8 @@ resource "aws_eip" "one" {
 # 9. Create the WebServer
 resource "aws_instance" "ejb-webserver" {
   ami               = "ami-0e86e20dae9224db8"
-  instance_type     = "t2.micro" # Corrected instance type
+  instance_type     = "t2.micro" 
+  #instance_type     = var.ejb_instance_type 
   availability_zone = "us-east-1a"
   key_name          = "ej"
 
