@@ -5,13 +5,11 @@
 
 provider "aws" {
   region = var.ejb_region
-  #region = "us-east-1"
 }
 
 # 1. Create VPC
 resource "aws_vpc" "ejb-prod-vpc" {
-  cidr_block = "10.0.0.0/16"
-
+  cidr_block = var.ejb_cidr_block
   tags = {
     Name = "ejb_production_vpc"
   }
@@ -34,7 +32,7 @@ resource "aws_route_table" "ejb-prod-route-table" {
 
   route {
     ipv6_cidr_block = "::/0"
-    gateway_id = aws_internet_gateway.ejb-gw.id
+    gateway_id      = aws_internet_gateway.ejb-gw.id
   }
 
   tags = {
@@ -44,10 +42,10 @@ resource "aws_route_table" "ejb-prod-route-table" {
 
 # 4. Create a subnet-1
 resource "aws_subnet" "ejb-subnet-1" {
-  vpc_id            = aws_vpc.ejb-prod-vpc.id
-  cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
-
+  vpc_id                  = aws_vpc.ejb-prod-vpc.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "us-east-1a"
+  map_public_ip_on_launch = true
   tags = {
     Name = "Prod-subnet-1"
   }
@@ -103,8 +101,8 @@ resource "aws_security_group" "ejb-allow_web" {
 
 # 7. Create network interface 
 resource "aws_network_interface" "ejb-web-server-nic" {
-  subnet_id   = aws_subnet.ejb-subnet-1.id
-  private_ips = ["10.0.1.50"]
+  subnet_id       = aws_subnet.ejb-subnet-1.id
+  private_ips     = ["10.0.1.50"]
   security_groups = [aws_security_group.ejb-allow_web.id]
 }
 
@@ -119,11 +117,10 @@ resource "aws_eip" "one" {
 
 # 9. Create the WebServer
 resource "aws_instance" "ejb-webserver" {
-  ami               = "ami-0e86e20dae9224db8"
-  instance_type     = "t2.micro" 
-  #instance_type     = var.ejb_instance_type 
-  availability_zone = "us-east-1a"
-  key_name          = "ej"
+  ami               = var.ejb_ami_id
+  instance_type     = var.ejb_instance_type
+  availability_zone = var.ejb_availability_zone
+  key_name          = var.ejb_key_name
 
   network_interface {
     device_index         = 0
@@ -143,7 +140,7 @@ resource "aws_instance" "ejb-webserver" {
 }
 
 
-output "server_private_ip___________" { value = aws_instance.ejb-webserver.private_ip}
+output "server_private_ip___________" { value = aws_instance.ejb-webserver.private_ip }
 output "server_public_ip1___________" { value = aws_eip.one.public_ip }
 output "server_public_ip2___________" { value = aws_instance.ejb-webserver.public_ip }
 output "server_public_dns___________" { value = aws_instance.ejb-webserver.public_dns }
