@@ -110,7 +110,6 @@ resource "aws_network_interface" "ejb-web-server-nic" {
 
 # 8. Assign Public EIP
 resource "aws_eip" "one" {
-  #domain                   = "vpc" (not necessary use DNS)
   network_interface         = aws_network_interface.ejb-web-server-nic.id
   associate_with_private_ip = "10.0.1.50"
   depends_on                = [aws_internet_gateway.ejb-gw]
@@ -125,10 +124,6 @@ resource "aws_instance" "ejb-webserver" {
   key_name                    = var.ejb_key_name
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.ejb-subnet-1.id
-  # network_interface {
-  #   device_index         = 0
-  #   network_interface_id = aws_network_interface.ejb-web-server-nic.id
-  # }
 
   user_data = <<-EOF
                 #!/bin/bash
@@ -141,10 +136,3 @@ resource "aws_instance" "ejb-webserver" {
     Name = "ejb-web-server"
   }
 }
-
-
-# output "server_private_ip___________" { value = aws_instance.ejb-webserver.private_ip }
-# output "server_public_ip1___________" { value = aws_eip.one.public_ip }
-# output "server_public_ip2___________" { value = aws_instance.ejb-webserver.public_ip }
-# output "server_public_dns___________" { value = aws_instance.ejb-webserver.public_dns }
-# output "server_id___________________" { value = aws_instance.ejb-webserver.id }
