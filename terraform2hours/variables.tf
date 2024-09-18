@@ -30,5 +30,4 @@ variable "ejb_cidr_block" {
   description = "Instance type for the EC2 instance"
   type        = string
   default     = "10.0.0.0/16"
-
 }
