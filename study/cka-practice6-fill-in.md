@@ -127,7 +127,9 @@ resource "aws_internet_gateway" "demo" {
 
 
 
+00 Please fill the blank field(s) in the statement with the right words.
 
+You want Terraform to redeploy a specific resource that it is managing. Type the command you should use to mark the resource for replacement. __
 
 
 
@@ -154,7 +156,7 @@ resource "aws_subnet" "private_subnets" {
 </pre>
 
 Answer is incorrect
-- aws_subnet.private_subnet.id
+- aws_subnet.private_subnets[*]
 
 00. What command can you use to display details about the resource as shown below?
 <pre>

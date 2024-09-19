@@ -68,7 +68,6 @@ https://developer.hashicorp.com/terraform/language/state/purpose
 https://developer.hashicorp.com/terraform/language/settings/backends/configuration
 
 27. Which of the following is true about working with modules?
-
 - a single module can be called many times in a single configuration file
 - In Terraform, a single module can indeed be called multiple times within a single configuration file. 
 - This allows for reusability and modularity in the infrastructure code, making it easier to manage and maintain configurations.
