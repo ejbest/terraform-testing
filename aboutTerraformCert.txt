@@ -1,0 +1,9 @@
+1. Understand infrastructure as code (IaC) concepts (read quetions here very well)
+2. Understand the purpose of Terraform (vs other IaC) (Answer can not work with other cloud providers with Azurerm)
+3. Understand Terraform basics (terraform apply -destroy , terraform destroy)
+4. Use Terraform outside the core workflow (some about azure/gcp/aws and other kinds of code)
+5. Interact with Terraform modules (module questions 3 or 4 )
+6. Use the core Terraform workflow (in what order of things happen)
+7. Implement and maintain state (state and with workspaces - workspaces in cloud and on free )
+8. Read, generate, and modify configuration (code snippits that you have now to get the information from them)
+9. Understand Terraform Cloud capabilities
