@@ -4,12 +4,12 @@
 # Good Example for getting Started 
 
 provider "aws" {
-  region = var.ejb_region
+  region = local.ejb_region
 }
 
 # 1. Create VPC
 resource "aws_vpc" "ejb-prod-vpc" {
-  cidr_block = var.ejb_cidr_block
+  cidr_block = local.ejb_cidr_block
   tags = {
     Name = "ejb_production_vpc"
   }
@@ -44,7 +44,7 @@ resource "aws_route_table" "ejb-prod-route-table" {
 resource "aws_subnet" "ejb-subnet-1" {
   vpc_id                  = aws_vpc.ejb-prod-vpc.id
   cidr_block              = "10.0.1.0/24"
-  availability_zone       = "us-east-1a"
+  availability_zone       = local.ejb_availability_zone
   map_public_ip_on_launch = true
   tags = {
     Name = "Prod-subnet-1"
@@ -117,10 +117,10 @@ resource "aws_eip" "one" {
 
 # 9. Create the WebServer
 resource "aws_instance" "ejb-webserver" {
-  ami               = var.ejb_ami_id
-  instance_type     = var.ejb_instance_type
-  availability_zone = var.ejb_availability_zone
-  key_name          = var.ejb_key_name
+  ami               = local.ejb_ami_id
+  instance_type     = local.ejb_instance_type
+  availability_zone = local.ejb_availability_zone
+  key_name          = local.ejb_key_name
 
   network_interface {
     device_index         = 0
@@ -140,8 +140,3 @@ resource "aws_instance" "ejb-webserver" {
 }
 
 
-output "server_private_ip___________" { value = aws_instance.ejb-webserver.private_ip }
-output "server_public_ip1___________" { value = aws_eip.one.public_ip }
-output "server_public_ip2___________" { value = aws_instance.ejb-webserver.public_ip }
-output "server_public_dns___________" { value = aws_instance.ejb-webserver.public_dns }
-output "server_id___________________" { value = aws_instance.ejb-webserver.id }
