@@ -22,4 +22,24 @@ locals {
     team        = "ejb-devops"
     project     = "ejb-app"
   }
+
+  security_group_ingress_rules = [
+    {
+      description = "HTTPS traffic"
+      from_port   = 443
+      to_port     = 443
+    },
+    {
+      description = "HTTP traffic"
+      from_port   = 80
+      to_port     = 80
+    },
+    {
+      description = "SSH traffic"
+      from_port   = 22
+      to_port     = 22
+    },
+  ]
 }
+
+

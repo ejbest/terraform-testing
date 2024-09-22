@@ -16,21 +16,17 @@ resource "aws_vpc" "ejb-prod-vpc" {
   }
 }
 
-
 # 9. Create the WebServer
 resource "aws_instance" "ejb-webserver" {
   ami               = local.ejb_ami_id
   instance_type     = local.ejb_instance_type
   availability_zone = local.ejb_availability_zone
   key_name          = local.ejb_key_name
-  subnet_id         = aws_subnet.ejb-subnet-1.id    # Use Subnet directly
-  vpc_security_group_ids = [aws_security_group.ejb-allow_web.id]  # Use security groups directly
 
-  # network_interface {
-  #   device_index         = 0
-  #   network_interface_id = aws_network_interface.ejb-web-server-nic.id
-  # }
-
+  network_interface {
+    device_index         = 0
+    network_interface_id = aws_network_interface.ejb-web-server-nic.id
+  }
   user_data = <<-EOF
                 #!/bin/bash
                 sudo apt update -y
