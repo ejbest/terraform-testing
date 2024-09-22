@@ -2,6 +2,7 @@
 # https://www.youtube.com/watch?v=SLB_c_ayRMo&t=5027s
 # 
 # Good Example for getting Started 
+# in this version we are moving hard coded values out 
 
 provider "aws" {
   region = local.ejb_region
@@ -23,29 +24,25 @@ resource "aws_internet_gateway" "ejb-gw" {
 # 3. Create Route Table
 resource "aws_route_table" "ejb-prod-route-table" {
   vpc_id = aws_vpc.ejb-prod-vpc.id
-
   route {
     # All traffic to the internet gateway
-    cidr_block = "0.0.0.0/0"
+    cidr_block = local.route_cidr_block
     gateway_id = aws_internet_gateway.ejb-gw.id
   }
 
   route {
-    ipv6_cidr_block = "::/0"
+    ipv6_cidr_block = local.ejb_ipv6_cidr_block
     gateway_id      = aws_internet_gateway.ejb-gw.id
   }
-
   tags = {
     Name = "ejb-prod-route-table"
   }
 }
-#
 
 # 4. Create a subnet-1
 resource "aws_subnet" "ejb-subnet-1" {
-  vpc_id                  = aws_vpc.ejb-prod-vpc.id
-  cidr_block              = var.ejb_sub1_cidr_block
-  #cidr_block             = "10.0.1.0/24"
+  vpc_id     = aws_vpc.ejb-prod-vpc.id
+  cidr_block = local.ejb_sub1_cidr_block
   availability_zone       = local.ejb_availability_zone
   map_public_ip_on_launch = true
   tags = {
@@ -54,7 +51,7 @@ resource "aws_subnet" "ejb-subnet-1" {
 }
 
 # 5. Associate subnet with route table 
-resource "aws_route_table_association" "a" {
+resource "aws_route_table_association" "subnet1_association" {
   subnet_id      = aws_subnet.ejb-subnet-1.id
   route_table_id = aws_route_table.ejb-prod-route-table.id
 }
@@ -100,7 +97,6 @@ resource "aws_security_group" "ejb-allow_web" {
   }
 }
 
-
 # 7. Create network interface 
 resource "aws_network_interface" "ejb-web-server-nic" {
   subnet_id       = aws_subnet.ejb-subnet-1.id
@@ -115,7 +111,6 @@ resource "aws_eip" "one" {
   associate_with_private_ip = "10.0.1.50"
   depends_on                = [aws_internet_gateway.ejb-gw]
 }
-
 
 # 9. Create the WebServer
 resource "aws_instance" "ejb-webserver" {
@@ -140,5 +135,3 @@ resource "aws_instance" "ejb-webserver" {
     Name = "ejb-web-server"
   }
 }
-
-

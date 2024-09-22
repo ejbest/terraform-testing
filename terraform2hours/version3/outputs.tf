@@ -6,3 +6,7 @@ output "server_public_dns___________" { value = aws_eip.one.public_dns }
 output "server_public_ip1___________" { value = aws_eip.one.public_ip }
 output "server_public_ip2___________" { value = aws_instance.ejb-webserver.public_ip }
 output "server_id___________________" { value = aws_instance.ejb-webserver.id }
+#output "ssh -i ~/.ssh/ej.pem ubuntu@ " { value = aws_eip.one.public_ip }
+output "ssh_command" {
+  value = "ssh -i ~/.ssh/ej.pem ubuntu@${aws_eip.one.public_ip}"
+}

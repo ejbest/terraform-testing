@@ -1,10 +1,10 @@
 
 
-variable "ejb_sub1_cidr_block" {
-  description = "Instance type for the EC2 instance"
-  type        = string
-  default     = "10.0.1.0/24"
-}
+# variable "ejb_sub1_cidr_block" {
+#   description = "Instance type for the EC2 instance"
+#   type        = string
+#   default     = "10.0.1.0/24"
+# }
 
 #variable "ejb_region" {
 #  default = "us-east-1"
