@@ -39,10 +39,12 @@ resource "aws_route_table" "ejb-prod-route-table" {
     Name = "ejb-prod-route-table"
   }
 }
+#
 
 # 4. Create a subnet-1
 resource "aws_subnet" "ejb-subnet-1" {
   vpc_id                  = aws_vpc.ejb-prod-vpc.id
+  #cidr_block             = local.ejb_sub1_cidr_block
   cidr_block              = "10.0.1.0/24"
   availability_zone       = local.ejb_availability_zone
   map_public_ip_on_launch = true
