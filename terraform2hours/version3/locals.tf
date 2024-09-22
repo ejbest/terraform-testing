@@ -12,7 +12,7 @@ locals {
   ejb_key_name          = "ej"
 
   # subnet 
-  ejb_sub1_cidr_block = "10.0.1.0/24"
+  #ejb_sub1_cidr_block = "10.0.1.0/24"
 
 
 
@@ -21,4 +21,11 @@ locals {
     team        = "ejb-devops"
     project     = "ejb-app"
   }
+}
+
+
+variable "ejb_sub1_cidr_block" {
+  description = "Instance type for the EC2 instance"
+  type        = string
+  default     = "10.0.1.0/24"
 }
