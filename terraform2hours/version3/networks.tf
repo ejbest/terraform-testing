@@ -38,27 +38,34 @@ resource "aws_route_table_association" "subnet1_association" {
   route_table_id = aws_route_table.ejb-prod-route-table.id
 }
 
-#6. Create Security group 22, 80, 443
-dynamic "ingress" {
-  for_each = local.security_group_ingress_rules
-  content {
-    description = ingress.value.description
-    from_port   = ingress.value.from_port
-    to_port     = ingress.value.to_port
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+# 6. Create Security group 22, 80, 443
+resource "aws_security_group" "ejb-allow_web" {
+  name        = "allow_web traffic"
+  description = "Allow web inbound traffic and all outbound traffic"
+  vpc_id      = aws_vpc.ejb-prod-vpc.id
+
+  dynamic "ingress" {
+    for_each = local.security_group_ingress_rules
+    content {
+      description = ingress.value.description
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
+
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   tags = {
     Name = "ejb-allow-tls"
   }
 }
-
 
 # 7. Create network interface 
 resource "aws_network_interface" "ejb-web-server-nic" {
