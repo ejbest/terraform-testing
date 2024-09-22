@@ -12,8 +12,9 @@ locals {
   ejb_key_name          = "ej"
 
   # subnet 
-  ejb_sub1_cidr_block = "10.0.1.0/24"
-  route_cidr_block    = "0.0.0.0/0"
+  ejb_sub1_cidr_block   = "10.0.1.0/24"
+  route_cidr_block      = "0.0.0.0/0"
+  web_server_private_ip = "10.0.1.50"
 
 
   common_tags = {

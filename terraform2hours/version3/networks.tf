@@ -23,8 +23,8 @@ resource "aws_route_table" "ejb-prod-route-table" {
 
 # 4. Create a subnet-1
 resource "aws_subnet" "ejb-subnet-1" {
-  vpc_id     = aws_vpc.ejb-prod-vpc.id
-  cidr_block = local.ejb_sub1_cidr_block
+  vpc_id                  = aws_vpc.ejb-prod-vpc.id
+  cidr_block              = local.ejb_sub1_cidr_block
   availability_zone       = local.ejb_availability_zone
   map_public_ip_on_launch = true
   tags = {
@@ -82,7 +82,7 @@ resource "aws_security_group" "ejb-allow_web" {
 # 7. Create network interface 
 resource "aws_network_interface" "ejb-web-server-nic" {
   subnet_id       = aws_subnet.ejb-subnet-1.id
-  private_ips     = ["10.0.1.50"]
+  private_ips     = [local.web_server_private_ip]
   security_groups = [aws_security_group.ejb-allow_web.id]
 }
 
@@ -90,6 +90,6 @@ resource "aws_network_interface" "ejb-web-server-nic" {
 resource "aws_eip" "one" {
   domain                    = "vpc"
   network_interface         = aws_network_interface.ejb-web-server-nic.id
-  associate_with_private_ip = "10.0.1.50"
+  associate_with_private_ip = local.web_server_private_ip
   depends_on                = [aws_internet_gateway.ejb-gw]
 }
