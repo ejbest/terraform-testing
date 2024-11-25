@@ -6,9 +6,9 @@
 #   default     = "10.0.1.0/24"
 # }
 
-#variable "ejb_region" {
+# variable "ejb_region" {
 #  default = "us-east-1"
-#}
+# }
 
 # variable "ejb_availability_zone" {
 #   description = "availablilty zone"
