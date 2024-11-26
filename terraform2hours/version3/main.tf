@@ -8,7 +8,6 @@ provider "aws" {
   region = local.ejb_region
 }
 
-# 1. Create VPC
 resource "aws_vpc" "ejb-prod-vpc" {
   cidr_block = local.ejb_cidr_block
   tags = {
@@ -16,12 +15,36 @@ resource "aws_vpc" "ejb-prod-vpc" {
   }
 }
 
-# 9. Create the WebServer
+resource "tls_private_key" "ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+resource "aws_key_pair" "generated_key" {
+  key_name   = local.ejb_key_name
+  public_key = tls_private_key.ssh_key.public_key_openssh
+}
+
+
+# resource "null_resource" "ej-priv-key" {
+#   provisioner "local-exec" {
+#     command = "echo ${tls_private_key.ssh_key.private_key_pem}' > ej"
+#   }
+# }
+
+# resource "null_resource" "ej-priv-key" {
+#   provisioner "local-exec" {
+#     command = <<EOT
+#       echo "${tls_private_key.ssh_key.private_key_pem} > ej && chmod 0600 ej"
+#     EOT
+#   }
+# }
+
 resource "aws_instance" "ejb-webserver" {
   ami               = local.ejb_ami_id
   instance_type     = local.ejb_instance_type
   availability_zone = local.ejb_availability_zone
-  key_name          = local.ejb_key_name
+  key_name          = aws_key_pair.generated_key.key_name
 
   network_interface {
     device_index         = 0
