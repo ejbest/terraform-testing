@@ -8,11 +8,15 @@ output "server_public_ip2___________" { value = aws_instance.ejb-webserver.publi
 output "server_id___________________" { value = aws_instance.ejb-webserver.id }
 
 output "ssh_command" {
-  value = "ssh -i ej ubuntu@${aws_eip.one.public_ip}"
+  value = "\n\nssh -i ${var.ejb_private_keyname} ubuntu@${aws_eip.one.public_dns}\n\n"
+}
+
+output "key" {
+  value = var.ejb_private_keyname
 }
 
 output "browser" {
-  value = "http://${aws_eip.one.public_ip}"
+  value = "\n\nhttp://${aws_eip.one.public_ip}\n\n"
 }
 
 output "ej-pem-private-key" {

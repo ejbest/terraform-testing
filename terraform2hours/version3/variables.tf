@@ -1,41 +1,52 @@
 
+variable "ejb_private_keyname" {
+  description = "Private Key"
+  type        = string
+  default     = "test-key.pem" 
+}
 
-# variable "ejb_sub1_cidr_block" {
-#   description = "Instance type for the EC2 instance"
-#   type        = string
-#   default     = "10.0.1.0/24"
-# }
+# Define a local block with some variables
+locals {
 
-# variable "ejb_region" {
-#  default = "us-east-1"
-# }
+  # vpc
+  ejb_environment       = "production"
+  ejb_region            = "us-east-1"
+  ejb_availability_zone = "us-east-1a"
+  ejb_instance_type     = "t2.micro"
+  ejb_cidr_block        = "10.0.0.0/16"
+  ejb_ipv6_cidr_block   = "::/0"
+  ejb_ami_id            = "ami-0e86e20dae9224db8"
+  ejb_key_name          = "ej"
 
-# variable "ejb_availability_zone" {
-#   description = "availablilty zone"
-#   type        = string
-#   default     = "us-east-1a"
-# }
+  # subnet 
+  ejb_sub1_cidr_block   = "10.0.1.0/24"
+  route_cidr_block      = "0.0.0.0/0"
+  web_server_private_ip = "10.0.1.50"
 
-# variable "ejb_ami_id" {
-#   description = "AMI ID to use for the EC2 instance"
-#   type        = string
-#   default     = "ami-0e86e20dae9224db8" # Update this as needed
-# }
 
-# variable "ejb_instance_type" {
-#   description = "Instance type for the EC2 instance"
-#   type        = string
-#   default     = "t2.micro" # You can update this if needed
-# }
+  common_tags = {
+    environment = local.ejb_environment
+    team        = "ejb-devops"
+    project     = "ejb-app"
+  }
 
-# variable "ejb_key_name" {
-#   description = "Instance type for the EC2 instance"
-#   type        = string
-#   default     = "ej"
-# }
+  security_group_ingress_rules = [
+    {
+      description = "HTTPS traffic"
+      from_port   = 443
+      to_port     = 443
+    },
+    {
+      description = "HTTP traffic"
+      from_port   = 80
+      to_port     = 80
+    },
+    {
+      description = "SSH traffic"
+      from_port   = 22
+      to_port     = 22
+    },
+  ]
+}
 
-# variable "ejb_cidr_block" {
-#   description = "Instance type for the EC2 instance"
-#   type        = string
-#   default     = "10.0.0.0/16"
-# }
+
