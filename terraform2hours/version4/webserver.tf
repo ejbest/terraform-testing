@@ -4,7 +4,7 @@ resource "aws_instance" "ejb-webserver" {
   instance_type     = local.ejb_instance_type
   availability_zone = local.ejb_availability_zone
   key_name          = aws_key_pair.ej_key.key_name # Use the public key for AWS EC2
- 
+
 
   network_interface {
     device_index         = 0
